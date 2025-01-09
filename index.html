@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Platform</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 1rem;
+            text-align: center;
+        }
+        header nav a {
+            color: #fff;
+            margin: 0 1rem;
+            text-decoration: none;
+        }
+        #book-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            padding: 2rem;
+        }
+        .book {
+            border: 1px solid #ccc;
+            padding: 1rem;
+            width: 200px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Book Platform</h1>
+        <nav>
+            <a href="/add-book.html">Додати книгу</a>
+            <a href="/register.html">Зареєструватися</a>
+            <a href="/index.html">Прочитати книгу</a>
+        </nav>
+    </header>
+
+    <section id="book-list">
+        <!-- Книги завантажуються динамічно -->
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const response = await fetch('/api/books');
+            const books = await response.json();
+
+            const bookList = document.getElementById('book-list');
+            bookList.innerHTML = '';
+            books.forEach(book => {
+                const bookDiv = document.createElement('div');
+                bookDiv.className = 'book';
+                bookDiv.textContent = book.title;
+                bookDiv.onclick = () => {
+                    window.location.href = `/read-book.html?file=${book.file}`;
+                };
+                bookList.appendChild(bookDiv);
+            });
+        });
+    </script>
+</body>
+</html>
